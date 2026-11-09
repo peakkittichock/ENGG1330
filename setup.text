@@ -1,0 +1,14 @@
+
+
+
+open -a Docker
+
+docker info
+
+
+project env : 
+docker run --rm -it --init --network none \
+  -v "$HOME/ENGG1330":/workspace -w /workspace \
+  engg1330-project:2026-v03 bash
+
+
