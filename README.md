@@ -71,7 +71,6 @@ wrong spot; gray ` A ` = not in the code.
 | `LV3.py` | Level 3: control room, Wordle-style code panel, ending |
 | `Endcredit.py` | Scrolling end credits |
 | `screen.py` | Shared screen code: colours, 80 × 24 check and pause |
-| `test_game.py` | Automated tests (see section 8) |
 | `ai_use.md` | Generative AI disclosure log |
 | `ACKNOWLEDGEMENTS.md` | Sources, inspirations and borrowed ideas |
 
@@ -115,26 +114,6 @@ A wrong action is explained on screen and the player stays where they were.
 | Play again? | `maybe`, empty | Asked again; accepts `y`/`yes`/`n`/`no` |
 
 ## 8. Testing
-
-### Automated tests
-
-```
-python3 -m unittest -v test_game.py
-```
-
-33 tests, standard library only. Answers come from a list instead of the keyboard, and
-**every screen shown during the tests is checked to fit in 80 × 24**. They cover:
-
-- Level 1: each round is solvable with its shots and not with one fewer; move parsing;
-  armor; a perfect run earns the bonus; invalid shots cost nothing; hitting a prisoner and
-  running out of shots both restart the round; `quit`
-- Level 2: border is all wall; the exit is always reachable (checked with a breadth-first
-  search in the test); a wall stops the walk; a full win with bad input and a new maze
-- Level 3: scoring with repeated letters; every invalid code; running out of guesses;
-  the 7th bonus guess; `BACK`; the room menu; the ending
-- Whole game: win with the bonus, give up then play again, `Ctrl+D`
-- Screen: pause message fits every width from 1 to 79; exactly 80 × 24 does not pause;
-  the game waits until the window is big enough
 
 ### Manual tests (in a fresh `engg1330-project:2026-v03` container)
 

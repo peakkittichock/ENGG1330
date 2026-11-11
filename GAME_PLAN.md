@@ -67,7 +67,7 @@ Do not break these names or return values. Each level file may also run standalo
   alphabet") and broken screen (`_ _ _ G _`).
 - Ending: 3-2-1 countdown, BOOM, "MISSION COMPLETE".
 - **Status: built** — `score_guess()` does real Wordle scoring (greens first, then
-  yellows by remaining count); covered by `test_game.py`.
+  yellows by remaining count).
 
 ### End credits (`Endcredit.py`)
 - Station explodes, scrolling credits with team names. Only shown when player escapes.
@@ -96,7 +96,7 @@ Do not break these names or return values. Each level file may also run standalo
 
 - [x] Build real Level 1 (blaster range).
 - [x] Implement `score_guess()` in `LV3.py` (Wordle scoring).
-- [x] Drafts: `README.md`, `ACKNOWLEDGEMENTS.md`, `ai_use.md`, `test_game.py` (33 tests).
+- [x] Drafts: `README.md`, `ACKNOWLEDGEMENTS.md`, `ai_use.md`.
   Team must fill every `[TODO]` (names, group no., contributions, manual test results).
 - [x] Stealth event: built, then **cut** (`Stealth.py` removed). Its 2.5 s timer is a
   real-time control, which the brief rules out.
