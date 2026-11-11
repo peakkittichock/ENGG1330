@@ -98,8 +98,9 @@ Do not break these names or return values. Each level file may also run standalo
 - [x] Implement `score_guess()` in `LV3.py` (Wordle scoring).
 - [x] Drafts: `README.md`, `ACKNOWLEDGEMENTS.md`, `ai_use.md`.
   Team must fill every `[TODO]` (names, group no., contributions, manual test results).
-- [x] Stealth event: built, then **cut** (`Stealth.py` removed). Its 2.5 s timer is a
-  real-time control, which the brief rules out.
+- [x] Stealth event (`Stealth.py`, Ryan): 2 s timer kept on purpose (team choice), even
+  though the brief rules out real-time controls. Ask STA. Runs after Level 1 (always)
+  and after Level 2 (50% chance).
 - [ ] Optional: station-HP typing boss, maze theme decorations.
 - [ ] Agree deadlines for each level.
 
@@ -116,8 +117,8 @@ Do not break these names or return values. Each level file may also run standalo
 - Deadline **Mon 16 Nov 2026 23:59**. Game show 30 Nov.
 - Single-player, **turn-based**, 5–10 min playthrough, ≥2 connected puzzles, instructions,
   clear win condition, restart. **Real-time controls are out of scope** — so the timed
-  stealth event and timed typing boss in section 4 conflict with the brief (stealth was
-  cut). LV2 moves one step per key press (arrow keys / w a s d), no timer.
+  stealth event and timed typing boss in section 4 conflict with the brief (stealth kept
+  timed on purpose, ask STA). LV2 moves one step per key press (arrow keys / w a s d), no timer.
 - Must run in container `engg1330-project:2026-v03`, stdlib + starter packages only.
 - If terminal < 80x24: pause and show a resize message that fits the space. Done:
   `screen.wait_for_size()`.

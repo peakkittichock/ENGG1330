@@ -4,6 +4,7 @@ import LV1
 import LV2
 import LV3
 import screen
+import Stealth
 from screen import BOLD, RED, RESET
 
 
@@ -11,7 +12,11 @@ def play_once():
     Lobby.run()
     if not LV1.play():
         return False
+    if not Stealth.quicktime(1):
+        return False
     if not LV2.play():
+        return False
+    if not Stealth.quicktime(0.5):
         return False
     return LV3.play(extra_guesses=1 if LV1.earned_bonus else 0)
 

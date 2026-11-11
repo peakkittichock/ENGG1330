@@ -58,6 +58,7 @@ HOW_TO_PLAY = [
     "  Search the room for clues, then guess the 5-letter self-destruct code.",
     "  Green [A] = right spot, yellow (A) = wrong spot, gray A = not in the code.",
     "",
+    "  Between levels a guard may come: press the letter shown, fast!",
     "  Type quit in any level to give up (the guards catch you).",
     "  Ctrl+C leaves the game at any time.",
 ]

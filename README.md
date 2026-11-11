@@ -42,6 +42,7 @@ typed answer and `ENTER`; the maze moves one step per key press.
 |---|---|---|
 | Welcome + How to play | Read the story and the rules | `ENTER` |
 | Level 1 – Blaster range | Clear a 3×3 grid of troopers in 3 rounds with few shots, without hitting a prisoner. Armored troopers need 2 hits. Hitting a prisoner or running out of shots restarts the round. | `r1`–`r3` row, `c1`–`c3` column, `1`–`9` one door, `hint`, `quit` |
+| Stealth event (after Level 1, sometimes after Level 2) | A guard comes close. Press the letter shown before the `====` bar runs out (2 seconds). Wrong key or too slow: caught (GAME OVER). | One key `a`–`z`, no `ENTER` |
 | Level 2 – Maintenance tunnels | Walk through a random maze to the exit `EX` (bottom-right). | Arrow keys or `w a s d`, one step per key press (hold to keep going, no `ENTER`); `r` new maze; `q` twice to give up |
 | Level 3 – Control room | Search the room for clues, then crack the 5-letter self-destruct code, Wordle-style. 6 guesses per try; you can search again and retry. | `1`–`3`, a 5-letter word, `BACK` leaves the panel, `quit` |
 
@@ -49,7 +50,7 @@ typed answer and `ENTER`; the maze moves one step per key press.
 wrong spot; gray ` A ` = not in the code.
 
 **Win:** enter the correct code in Level 3. The station explodes and the end credits roll.
-**Lose:** type `quit` in any level → GAME OVER.
+**Lose:** type `quit` in any level, or get caught by a guard → GAME OVER.
 **Restart:** after a win or a loss the game asks `Play again? (y/n)`.
 
 ## 4. Connected puzzles
@@ -67,6 +68,7 @@ wrong spot; gray ` A ` = not in the code.
 | `main.py` | Runs the whole game: welcome → levels → credits, game over and play again |
 | `Lobby.py` | Welcome screen and how-to-play page |
 | `LV1.py` | Level 1: blaster range (depth-first search for the `hint` command) |
+| `Stealth.py` | Stealth event between levels: hide from a guard by typing a letter |
 | `LV2.py` | Level 2: random maze (depth-first search maze generation) |
 | `LV3.py` | Level 3: control room, Wordle-style code panel, ending |
 | `Endcredit.py` | Scrolling end credits |
@@ -105,6 +107,7 @@ A wrong action is explained on screen and the player stays where they were.
 | Any screen | Window smaller than 80 × 24, down to 1 × 1 | Pauses with a message that fits, carries on when enlarged |
 | Level 1 | `zzz`, `r9`, empty, a door with nothing in it | Message, no shot used |
 | Level 1 | Last shot used with troopers left | ROUND FAILED, round restarts |
+| Stealth | Wrong key, or no key in 2 seconds | Caught, GAME OVER; keys pressed early are ignored |
 | Level 2 | Any other key | "That key does nothing", no move |
 | Level 2 | Walking into a wall | Stays put, "Bump! That's a wall." |
 | Level 2 | `q` pressed by mistake | Asks first; only a second `q` gives up |
@@ -139,6 +142,10 @@ A wrong action is explained on screen and the player stays where they were.
 - Level 3 never ends in a loss: after the last wrong guess the player can search the room
   and retry. This is on purpose so the final puzzle cannot block the ending.
 - Colours use ANSI escape codes; very old terminals may show raw codes.
+- The stealth event has a 2-second timer. The brief asks for a turn-based game, so this
+  is the one timed part, kept on purpose by the team. If the window is resized during
+  those 2 seconds the timer does not pause. Without a real terminal (or on Windows) the
+  player types the letter and `ENTER` instead, and the time is checked afterwards.
 
 ## 10. Contributions
 
@@ -146,7 +153,7 @@ A wrong action is explained on screen and the player stays where they were.
 |---|---|
 | Khanthithao Krittichok (Peak) | [TODO check] Level 1 (owner); joined all files into `main.py`; how-to-play rules; Level 3 ending; game plan document; README, tests |
 | Sutowo Antonio | [TODO check] Level 2 maze |
-| Leung Ho Long Ryan | [TODO] e.g. stealth event idea (`Stealth.py`, later cut because the brief rules out real-time controls) |
+| Leung Ho Long Ryan | [TODO check] Stealth event (`Stealth.py`): idea and first version (guard, random hide letter, shrinking bar); timer rewritten without threads so a late key cannot leak into the next level |
 | Mensah Lord Kojo Tandoh | [TODO] e.g. Level 3, welcome screen art, end credits, videos |
 
 Everyone: planning on the team Excalidraw board, playtesting, checking the final
