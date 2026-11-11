@@ -28,11 +28,10 @@ Welcome page -> How to play (rules, story) -> Level 1 -> Level 2 -> Level 3 -> E
 | File | Entry function | Returns |
 |---|---|---|
 | `Lobby.py` | `run()` | nothing (welcome + how-to-play) |
-| `LV1.py` | `play()` | `True` cleared / `False` failed |
-| `LV2.py` | `run_level()` | `True` / `False` |
-| `LV3.py` | `play()` | `True` escaped / `False` |
-| `Stealth.py` | `quicktime(chance)` | `True` safe / `False` caught (called between levels) |
-| `Endcredit.py` | `play_credits()` | nothing; Ctrl+C skips |
+| `LV1.py` | `play()` | `True` cleared / `False` quit; sets `LV1.earned_bonus` |
+| `LV2.py` | `play()` | `True` / `False` |
+| `LV3.py` | `play(extra_guesses=0)` | `True` escaped / `False` |
+| `Endcredit.py` | `play_credits()` | nothing |
 
 Do not break these names or return values. Each level file may also run standalone
 (`if __name__ == "__main__":`).
@@ -46,20 +45,19 @@ Do not break these names or return values. Each level file may also run standalo
   and sent to the station for questioning. You slipped away from the guards, now escape
   and destroy the station."
 
-### Level 1 — Interrogation / find the impostor (owner: Peak)
-- Stage 1: "SHOOT THE ENEMY (find the right enemy, not the ally)".
-- Two (or more) mysterious characters. Player picks questions from a fixed menu;
-  each character answers. One is the impostor/stormtrooper-type guard.
-- Limited number of questions. When questions run out, player must deduce (or gamble)
-  who to shoot. Right = advance, wrong = fail.
-- **Status: placeholder** in `LV1.py` (menu "1. Escape / 2. Give up"). Needs real build.
+### Level 1 — The blaster range (owner: Peak)
+- "SHOOT THE ENEMY, not the ally": 3 x 3 grid of doors with troopers and prisoners.
+  A bolt hits a row, a column or one door; armored troopers need 2 hits; few shots per round.
+- 3 rounds. Hitting a prisoner or running out of shots restarts the round. `hint` uses a
+  depth-first search. No prisoner hit = one extra guess in Level 3.
+- **Status: built** in `LV1.py`.
 
 ### Level 2 — Through the shadows: maze (owner: Antonio)
 - Imperial alarms sound; player enters the station's maintenance tunnels.
   Security droids patrol, laser barriers block paths.
 - Objective: find the right path to the central control room (enter different rooms).
-- **Status: built** in `LV2.py`: random 2D maze (recursive backtracker), arrow keys/WASD,
-  raw terminal input, par move count. Theme decorations (droids, barriers, rooms) = possible extra.
+- **Status: built** in `LV2.py`: random 2D maze (recursive backtracker), arrow keys / `w a s d`,
+  one step per key press (no timer, so still turn based). Par count and dead-end check were cut.
 
 ### Level 3 — Wordle: self-destruct code
 - Player is in the control room. Find the self-destruct secret code and type it into
@@ -67,7 +65,7 @@ Do not break these names or return values. Each level file may also run standalo
 - Code: Wordle-style 5-letter guess, green/yellow/gray tiles, `MAX_GUESSES = 6`,
   answer `CODE = "OMEGA"`. Clues in room: commander's log ("last letter of the Greek
   alphabet") and broken screen (`_ _ _ G _`).
-- Ending animation: ship flies away, BOOM, "MISSION COMPLETE".
+- Ending: 3-2-1 countdown, BOOM, "MISSION COMPLETE".
 - **Status: built** — `score_guess()` does real Wordle scoring (greens first, then
   yellows by remaining count); covered by `test_game.py`.
 
@@ -96,21 +94,20 @@ Do not break these names or return values. Each level file may also run standalo
 
 ## 5. TODO
 
-- [ ] Build real Level 1 (question menu, two characters, deduce impostor, shoot).
+- [x] Build real Level 1 (blaster range).
 - [x] Implement `score_guess()` in `LV3.py` (Wordle scoring).
-- [x] Drafts: `README.md`, `ACKNOWLEDGEMENTS.md`, `ai_use.md`, `test_game.py` (32 tests).
+- [x] Drafts: `README.md`, `ACKNOWLEDGEMENTS.md`, `ai_use.md`, `test_game.py` (33 tests).
   Team must fill every `[TODO]` (names, group no., contributions, manual test results).
-- [x] Stealth event: `Stealth.py`, called in `main.py` before LV2 and before LV3 (`STEALTH_CHANCE = 0.5`).
-  Single keypress + shrinking bar, no threads. **Timed = real-time; confirm with STA** (set chance 0 to disable).
+- [x] Stealth event: built, then **cut** (`Stealth.py` removed). Its 2.5 s timer is a
+  real-time control, which the brief rules out.
 - [ ] Optional: station-HP typing boss, maze theme decorations.
 - [ ] Agree deadlines for each level.
 
 ## 6. Rules for anyone (incl. Claude) editing code
 
 - Standard library only; must run with `python3 main.py`.
-- Keep every screen within 80x24; clear screen with `"\033[2J\033[H"`.
-- Call `screen.wait_for_size()` right before drawing each screen (redraw the screen
-  inside a loop, so a pause just leads to a fresh redraw). LV1 must do this too.
+- Keep every screen within 80x24: draw screens with `screen.show(lines, prompt)`
+  (at most 22 lines of at most 79 characters).
 - Keep the level contract in section 2.
 - Beginner-readable code (course project): simple functions, comments, no clever tricks.
 
@@ -119,9 +116,8 @@ Do not break these names or return values. Each level file may also run standalo
 - Deadline **Mon 16 Nov 2026 23:59**. Game show 30 Nov.
 - Single-player, **turn-based**, 5–10 min playthrough, ≥2 connected puzzles, instructions,
   clear win condition, restart. **Real-time controls are out of scope** — so the timed
-  stealth event and timed typing boss in section 4 conflict with the brief; make them
-  turn-based (e.g. limited tries) if built. LV2 arrow-key raw input: confirm with STA it
-  counts as turn-based (one move per keypress), or offer typed `w/a/s/d` + ENTER fallback.
+  stealth event and timed typing boss in section 4 conflict with the brief (stealth was
+  cut). LV2 moves one step per key press (arrow keys / w a s d), no timer.
 - Must run in container `engg1330-project:2026-v03`, stdlib + starter packages only.
 - If terminal < 80x24: pause and show a resize message that fits the space. Done:
   `screen.wait_for_size()`.
