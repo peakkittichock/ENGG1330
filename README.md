@@ -2,9 +2,6 @@
 
 ENGG1330 Group Project 2026–27 — a single-player, turn-based console puzzle adventure in Python.
 
-> **TODO before submitting:** fill in every `[TODO]` below (group number, names, subclass,
-> contributions, test results), then delete this note.
-
 | | |
 |---|---|
 | Group | 7 |
@@ -146,12 +143,12 @@ python3 -m unittest -v test_game.py
 | 1 | Full normal playthrough | Reaches the ending and credits | Pass |
 | 2 | Level 1: shoot a prisoner | ROUND FAILED, round restarts, no bonus at the end | Pass |
 | 3 | Level 1: type `hint` | Shows a safe shot | Pass |
-| 4 | Level 2: hold an arrow key, walk into a wall, press `x`, press `q` once | Moves step by step, messages, no crash, `q` only asks | [TODO] |
+| 4 | Level 2: hold an arrow key, walk into a wall, press `x`, press `q` once | Moves step by step, messages, no crash, `q` only asks | Pass |
 | 5 | Level 3: `ab`, `12345`, empty, same code twice | Message, no guess used | Pass |
 | 6 | Level 3: use all guesses wrong | Alarm message, back in the room, can retry | Pass |
 | 7 | Type `quit` in a level, then `y` | GAME OVER, then game restarts | Pass |
 | 8 | Start in a window smaller than 80 × 24, then enlarge | Pause message, game carries on | Pass |
-| 9 | `Ctrl+C` / `Ctrl+D` at a prompt | "Thanks for playing!", no traceback | [TODO] |
+| 9 | `Ctrl+C` / `Ctrl+D` at a prompt | "Thanks for playing!", no traceback | Pass |
 
 ## 9. Known limitations
 
