@@ -30,7 +30,6 @@ class Quit(Exception):
     pass
 
 
-# ---------------------------------------------------------------- game rules
 def parse_move(text):
     text = text.replace(" ", "").lower()
     if len(text) == 1 and text in "123456789":
@@ -93,8 +92,6 @@ def find_plan(grid, shots, belts):
             return [move] + rest
     return None
 
-
-# ------------------------------------------------------------------- drawing
 def paint(text, code):
     if screen.COLOR and code and text:
         return "\033[" + code + "m" + text + "\033[0m"
@@ -125,7 +122,7 @@ def board_lines(grid, belts):
 
 
 def round_screen(number, level, grid, shots, strikes, message, footer):
-    title = "STAGE 1: BLASTER TRAINING   Round %d of %d: %s" % (
+    title = "LEVEL 1: BLASTER RANGE   Round %d of %d: %s" % (
         number, len(LEVELS), level["title"])
     status = "Shots left: %d    Allies hit: %d/%d    Stormtroopers left: %d" % (
         shots, strikes, MAX_ALLY_HITS, left(grid))
@@ -143,14 +140,12 @@ def show(lines, prompt):
         raise Quit
     return answer
 
-
-# ----------------------------------------------------------------- game flow
 INTRO = [
-    centered("STAGE 1: BLASTER STRATEGY GAME", "1;33"), "",
+    centered("LEVEL 1: BLASTER RANGE", "1;33"), "",
     "  Cadet, the Empire has captured you, A REBEL! Only the right final code",
     "  can help you escape. First, you need to prove you can handle a blaster.",
     "  Hit every stormtrooper target, but hold your fire on our REBEL allies.",
-    "  I will give you the access card to enter the base.", "",
+    "  After passing this level,I will give you the access card to enter the base.", "",
     "  HOW TO PLAY", centered(LEGEND),
     "  Every shot costs 1 charge and hits everything in its line, friend or foe.",
     "  Armored stormtroopers need 2 hits. IMPORTANT! Rows marked >> slide right",
@@ -224,7 +219,7 @@ def win_screen(allies_hit):
         "  enter the next level. The next level will involve a tunnel/maze, be",
         "  careful of the countdown. Be quick to find the STAR, which leads to the",
         "  final vault. There will be a purple orb, which is a crystal, which gives A HINT to the final",
-        "  stage. Collect it by passing through it!",
+        "  level. Collect it by passing through it!",
         "  Use WASD and/or arrow keys to navigate. GOOD LUCK!", "",
         "  Allies hit: %d" % allies_hit]
     if allies_hit == 0:
@@ -232,7 +227,7 @@ def win_screen(allies_hit):
     return lines
 
 
-def run_stage1():
+def run_level1():
     allies_hit = 0
     try:
         show(INTRO, "Press Enter to begin> ")
@@ -246,4 +241,4 @@ def run_stage1():
 
 
 if __name__ == "__main__":
-    print(CLEAR + "Stage 1 finished. Result: " + str(run_stage1()))
+    print(CLEAR + "Level 1 finished. Result: " + str(run_level1()))

@@ -11,8 +11,8 @@ from screen import RESET
 
 def play_once():
     Lobby.run()
-    stage1 = LV1.run_stage1()
-    if not stage1["passed"]:
+    level1 = LV1.run_level1()
+    if not level1["passed"]:
         return False
     if not Stealth.quicktime():
         return False
@@ -20,7 +20,7 @@ def play_once():
         return False
     if not Stealth.quicktime():
         return False
-    return LV3.play(extra_guesses=1 if stage1["bonus_guess"] else 0,
+    return LV3.play(extra_guesses=1 if level1["bonus_guess"] else 0,
                     has_hint=LV2.found_hint)
 
 
@@ -40,7 +40,7 @@ def main():
         while True:
             if play_once():
                 Endcredit.play_credits()
-                lines = ["You escaped from the Death !", ""]
+                lines = ["You escaped from the Death Star!", ""]
             else:
                 lines = defeated.game_over_lines()
             if not ask_play_again(lines):
