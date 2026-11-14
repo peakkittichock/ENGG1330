@@ -12,6 +12,7 @@ GREEN = "\033[92m"
 YELLOW = "\033[93m"
 CYAN = "\033[96m"
 CLEAR = RESET + "\033[2J\033[H"
+COLOR = sys.stdout.isatty()   # colours only in a real terminal, not a file or pipe
 
 
 def too_small():

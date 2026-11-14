@@ -35,16 +35,16 @@ Each level can also be run on its own for testing, e.g. `python3 LV1.py`.
 
 ## 3. Rules and controls
 
-Every screen is turn based: nothing happens until the player acts. Most screens take a
-typed answer and `ENTER`; the maze moves one step per key press.
+Most screens are turn based: nothing happens until the player acts. Most screens take a
+typed answer and `ENTER`; the maze moves one step per key press against a 45-second clock.
 
 | Screen | What you do | Controls |
 |---|---|---|
 | Welcome + How to play | Read the story and the rules | `ENTER` |
-| Level 1 – Blaster range | Clear a 3×3 grid of troopers in 3 rounds with few shots, without hitting a prisoner. Armored troopers need 2 hits. Hitting a prisoner or running out of shots restarts the round. | `r1`–`r3` row, `c1`–`c3` column, `1`–`9` one door, `hint`, `quit` |
-| Stealth event (after Level 1, sometimes after Level 2) | A guard comes close. Press the letter shown before the `====` bar runs out (2 seconds). Wrong key or too slow: caught (GAME OVER). | One key `a`–`z`, no `ENTER` |
-| Level 2 – Maintenance tunnels | Walk through a random maze to the exit `EX` (bottom-right). | Arrow keys or `w a s d`, one step per key press (hold to keep going, no `ENTER`); `r` new maze; `q` twice to give up |
-| Level 3 – Control room | Search the room for clues, then crack the 5-letter self-destruct code, Wordle-style. 6 guesses per try; you can search again and retry. | `1`–`3`, a 5-letter word, `BACK` leaves the panel, `quit` |
+| Level 1 – Blaster range | Clear a 3×3 grid of troopers in 4 rounds with few shots, without hitting an ally (rebel pilot). Armored troopers need 2 hits. Rows marked `>>` are conveyor belts that slide one door right after every shot. Hitting 2 allies or running out of shots restarts the round. | `r1`–`r3` row, `c1`–`c3` column, `1`–`9` one door, `hint`, `reset`, `help`, `quit` |
+| Stealth event (after Level 1 and after Level 2) | A guard comes close. Press the letter shown before the `====` bar runs out (2 seconds). Wrong key or too slow: caught (GAME OVER). | One key `a`–`z`, no `ENTER` |
+| Level 2 – Maintenance tunnels | Reach the exit `★` (bottom-right) of a random maze within 45 seconds. Optional: pick up the crystal hint `◆` on the way. Time runs out: caught (GAME OVER). | Arrow keys or `w a s d`, one step per key press (hold to keep going, no `ENTER`) |
+| Level 3 – Control room | Search the room for clues, then crack the 5-letter self-destruct code, Wordle-style. 4 guesses (5 with the Level 1 bonus); all wrong = game over. | `1`–`2`, a 5-letter word, `BACK` leaves the panel, `quit` |
 
 **Code colours (Level 3):** green `[A]` = right letter, right spot; yellow `(A)` = in the code,
 wrong spot; gray ` A ` = not in the code.
@@ -55,10 +55,11 @@ wrong spot; gray ` A ` = not in the code.
 
 ## 4. Connected puzzles
 
-- Clearing Level 1 without hitting any prisoner gives one extra guess (7 instead of 6) on
-  the Level 3 self-destruct panel.
-- The clues in the Level 3 control room (the commander's log and the broken screen)
-  change what the player knows on the panel: without them the panel shows no hint.
+- Clearing Level 1 without hitting any ally gives one extra guess (5 instead of 4) on the
+  Level 3 self-destruct panel.
+- Picking up the crystal hint `◆` in the Level 2 maze reveals one letter of the code
+  in the Level 3 control room (`_ _ _ E _`) right away. No hint, no letter.
+- The commander's log in the Level 3 control room gives a word clue on the panel.
 - Clearing each level is what unlocks the next part of the station.
 
 ## 5. Files
@@ -70,8 +71,9 @@ wrong spot; gray ` A ` = not in the code.
 | `LV1.py` | Level 1: blaster range (depth-first search for the `hint` command) |
 | `Stealth.py` | Stealth event between levels: hide from a guard by typing a letter |
 | `LV2.py` | Level 2: random maze (depth-first search maze generation) |
-| `LV3.py` | Level 3: control room, Wordle-style code panel, ending |
+| `LV3.py` | Level 3: control room, Wordle-style code panel |
 | `Endcredit.py` | Scrolling end credits |
+| `defeated.py` | Game-over screen shown every time the player loses |
 | `screen.py` | Shared screen code: colours, 80 × 24 check and pause |
 | `ai_use.md` | Generative AI disclosure log |
 | `ACKNOWLEDGEMENTS.md` | Sources, inspirations and borrowed ideas |
@@ -84,13 +86,13 @@ Every level has a `play()` function that returns `True` if the player cleared it
 - **Nested lists:** the Level 1 range and the Level 2 maze are lists of lists
   (`grid[row][col]`); Level 3 keeps guesses as `(word, result)` pairs.
 - **Level 1 hint:** a depth-first search tries every shot that hits a trooper and no
-  prisoner, then searches again from the new grid, until the grid is clear or the shots
-  run out. The tests use the same search to prove each round's shot limit is the smallest
-  that works.
+  ally, then searches again from the new grid, until the grid is clear or the shots run
+  out.
 - **Maze generation:** randomised depth-first search with a stack. Every cell is visited,
-  so the exit can always be reached.
+  so the exit can always be reached. Mazes with fewer than 12 dead ends are thrown away.
+  A breadth-first search gives the shortest route, shown as the par after the maze.
 - **Wordle scoring:** two passes. Greens first; the remaining answer letters are counted and
-  yellows are only given while that count lasts, so `EEEEE` vs `OMEGA` shows one green and
+  yellows are only given while that count lasts, so `EEEEE` vs `KYBER` shows one green and
   no yellows.
 - **80 × 24 screen:** every screen goes through `screen.show()`, which clears the screen,
   prints at most 22 lines and puts the prompt on row 23, so `ENTER` never scrolls.
@@ -107,10 +109,12 @@ A wrong action is explained on screen and the player stays where they were.
 | Any screen | Window smaller than 80 × 24, down to 1 × 1 | Pauses with a message that fits, carries on when enlarged |
 | Level 1 | `zzz`, `r9`, empty, a door with nothing in it | Message, no shot used |
 | Level 1 | Last shot used with troopers left | ROUND FAILED, round restarts |
+| Level 1 | 2 allies hit in one round | ROUND FAILED, round restarts |
 | Stealth | Wrong key, or no key in 2 seconds | Caught, GAME OVER; keys pressed early are ignored |
-| Level 2 | Any other key | "That key does nothing", no move |
-| Level 2 | Walking into a wall | Stays put, "Bump! That's a wall." |
-| Level 2 | `q` pressed by mistake | Asks first; only a second `q` gives up |
+| Level 2 | Any other key | Ignored, no move |
+| Level 2 | Walking into a wall | Stays put |
+| Level 2 | Clock reaches 0 | "Time's up!", GAME OVER |
+| Level 2 | Window made smaller than 80 × 24 | Clock pauses until the window is big enough |
 | Level 3 room | Empty input, `9`, `hello` | Says it is not an option |
 | Level 3 panel | Empty, 4 or 6 letters, digits, `É`, same code twice | Says what is wrong, no guess used |
 | Level 3 panel | Panel opened before finding clues | `BACK` leaves without losing |
@@ -123,11 +127,11 @@ A wrong action is explained on screen and the player stays where they were.
 | # | Test | Expected | Result |
 |---|---|---|---|
 | 1 | Full normal playthrough | Reaches the ending and credits | Pass |
-| 2 | Level 1: shoot a prisoner | ROUND FAILED, round restarts, no bonus at the end | Pass |
+| 2 | Level 1: shoot one ally, then a second one | First: warning, round goes on. Second: ROUND FAILED, round restarts. No bonus at the end | [TODO retest] |
 | 3 | Level 1: type `hint` | Shows a safe shot | Pass |
-| 4 | Level 2: hold an arrow key, walk into a wall, press `x`, press `q` once | Moves step by step, messages, no crash, `q` only asks | Pass |
+| 4 | Level 2: hold an arrow key, walk into a wall, press `x`, let the clock run out | Moves step by step, no crash, "Time's up!" then GAME OVER | [TODO retest] |
 | 5 | Level 3: `ab`, `12345`, empty, same code twice | Message, no guess used | Pass |
-| 6 | Level 3: use all guesses wrong | Alarm message, back in the room, can retry | Pass |
+| 6 | Level 3: use all guesses wrong | Alarm message, then game-over screen | Pass |
 | 7 | Type `quit` in a level, then `y` | GAME OVER, then game restarts | Pass |
 | 8 | Start in a window smaller than 80 × 24, then enlarge | Pause message, game carries on | Pass |
 | 9 | `Ctrl+C` / `Ctrl+D` at a prompt | "Thanks for playing!", no traceback | Pass |
@@ -137,13 +141,11 @@ A wrong action is explained on screen and the player stays where they were.
 - The size is checked before each screen is drawn. If the window is made smaller while
   the player is typing, the pause comes after `ENTER`.
 - A very long typed answer (over one line) can wrap. Normal answers are a few characters.
-- On Windows the maze takes typed `w a s d` + `ENTER` instead of arrow keys. The course
-  container (Linux) uses arrow keys.
-- Level 3 never ends in a loss: after the last wrong guess the player can search the room
-  and retry. This is on purpose so the final puzzle cannot block the ending.
+- Level 2 needs a real terminal (it reads single key presses). Without one it ends the
+  level. Terminals without UTF-8 (or `python3 main.py --ascii`) show `()`, `<>`, `EX`.
 - Colours use ANSI escape codes; very old terminals may show raw codes.
-- The stealth event has a 2-second timer. The brief asks for a turn-based game, so this
-  is the one timed part, kept on purpose by the team. If the window is resized during
+- The stealth event (2 seconds) and the Level 2 maze (45 seconds) are timed. The brief
+  asks for a turn-based game; these timed parts are kept on purpose by the team. If the window is resized during
   those 2 seconds the timer does not pause. Without a real terminal (or on Windows) the
   player types the letter and `ENTER` instead, and the time is checked afterwards.
 

@@ -1,10 +1,8 @@
-import time
-
 import screen
-from screen import BOLD, RED, RESET, YELLOW
+from screen import BOLD, GREEN, RED, RESET, YELLOW
 
-CODE = "OMEGA"
-MAX_GUESSES = 6
+CODE = "KYBER"
+MAX_GUESSES = 4
 
 GREEN_TILE = "\033[42;30m"
 YELLOW_TILE = "\033[43;30m"
@@ -51,20 +49,25 @@ def check_code(guess, guesses):
     return ""
 
 
-def code_panel(found_clue, found_letter, max_guesses=MAX_GUESSES):
-    guesses = []
+def board(found_clue, found_letter, guesses, max_guesses):
+    lines = [BOLD + YELLOW + "=== SELF-DESTRUCT PANEL ===" + RESET, ""]
+    if found_clue:
+        lines.append("Clue: Think lightsaber.")
+    else:
+        lines.append("Clue: ??? (maybe the commander wrote it down somewhere)")
+    lines += ["Code: _ _ _ E _" if found_letter else "Code: _ _ _ _ _", ""]
+    for guess, result in guesses:
+        lines.append("    " + tiles(guess, result))
+    for _ in range(max_guesses - len(guesses)):
+        lines.append("     _   _   _   _   _")
+    return lines
+
+
+def code_panel(found_clue, found_letter, guesses, max_guesses=MAX_GUESSES):
+    # guesses is kept by the caller, so leaving the panel does not reset it.
     message = ""
     while len(guesses) < max_guesses:
-        lines = [BOLD + YELLOW + "=== SELF-DESTRUCT PANEL ===" + RESET, ""]
-        if found_clue:
-            lines.append("Clue: The last letter of the Greek alphabet - the end of everything.")
-        else:
-            lines.append("Clue: ??? (maybe the commander wrote it down somewhere)")
-        lines += ["Code: _ _ _ G _" if found_letter else "Code: _ _ _ _ _", ""]
-        for guess, result in guesses:
-            lines.append("    " + tiles(guess, result))
-        for _ in range(max_guesses - len(guesses)):
-            lines.append("     _   _   _   _   _")
+        lines = board(found_clue, found_letter, guesses, max_guesses)
         left = max_guesses - len(guesses)
         lines += ["", f"Guesses left: {left}   (type BACK to leave the panel)", message]
 
@@ -77,81 +80,55 @@ def code_panel(found_clue, found_letter, max_guesses=MAX_GUESSES):
             continue
         guesses.append((guess, score_guess(guess, CODE)))
         if guess == CODE:
+            # Show the all-green row before the credits roll.
+            lines = board(found_clue, found_letter, guesses, max_guesses)
+            lines += ["", GREEN + BOLD + "CODE ACCEPTED! Self-destruct sequence started." + RESET]
+            screen.show(lines, "Press ENTER to escape> ")
             return True
+    # Out of guesses: show the last board, then the level is lost.
+    lines = board(found_clue, found_letter, guesses, max_guesses)
+    lines += ["", RED + BOLD + "WRONG CODE! Alarms blare. Stormtroopers storm the room!" + RESET]
+    screen.show(lines, "Press ENTER> ")
     return False
 
 
-def control_room(max_guesses=MAX_GUESSES):
+def control_room(max_guesses=MAX_GUESSES, has_hint=False):
     found_clue = False
-    found_letter = False
-    message = "You reach the CONTROL ROOM. Find the self-destruct code!"
+    found_letter = has_hint
+    guesses = []
+    if has_hint:
+        message = ("You reach the CONTROL ROOM. The hint you found in the tunnels\n"
+                   "reads: CODE  _ _ _ E _")
+    else:
+        message = "You reach the CONTROL ROOM. Find the self-destruct code!"
     while True:
         lines = [BOLD + YELLOW + "[ LEVEL 3: CONTROL ROOM ]" + RESET, "",
                  "Blinking consoles everywhere. In the middle stands the",
-                 "SELF-DESTRUCT PANEL. A log and a broken screen are nearby.", "",
+                 "SELF-DESTRUCT PANEL. The commander's log lies nearby.", "",
                  message, "",
                  "1. Read the commander's log",
-                 "2. Check the broken screen",
-                 "3. Use the self-destruct panel",
+                 "2. Use the self-destruct panel",
                  "quit = give up"]
         choice = screen.show(lines, "> ").strip().lower()
 
         if choice == "1":
             found_clue = True
-            message = ("COMMANDER'S LOG: \"The code is the last letter of the Greek\n"
-                       "alphabet - the end of everything.\"")
+            message = "COMMANDER'S LOG: \"Think lightsaber.\""
         elif choice == "2":
-            found_letter = True
-            message = "The broken screen flickers: CODE  _ _ _ G _"
-        elif choice == "3":
-            result = code_panel(found_clue, found_letter, max_guesses)
+            result = code_panel(found_clue, found_letter, guesses, max_guesses)
             if result is True:
                 return True
-            if result is None:
-                message = "You step away from the panel. Look around for clues."
-            else:
-                message = RED + "WRONG CODE! Alarms blare. Try again!" + RESET
+            if result is False:
+                return False
+            message = "You step away from the panel. Look around for clues."
         elif choice == "quit":
             return False
         else:
-            message = f"'{choice[:20]}' is not an option. Choose 1, 2 or 3."
+            message = f"'{choice[:20]}' is not an option. Choose 1 or 2."
 
 
-STATION = [
-    r"      _.-=========-._",
-    r"   .-'   \   |   /  '-.",
-    r"  <=[|== IRONWAKE ==|]=>       ==[>",
-    r"   '-.   /   |   \  .-'",
-    r"      `'-=========-'`",
-]
-
-BOOM = [
-    r"     \    \  |  /    /",
-    r"   --  ( * BOOM!! * )  --",
-    r"  --- ( *** BOOM!! *** ) ---                   ==[>",
-    r"   --  ( * BOOM!! * )  --",
-    r"     /    /  |  \    \ ",
-]
-
-
-def ending():
-    for title, picture in [("SELF-DESTRUCT IN 3...", STATION),
-                           ("SELF-DESTRUCT IN 2...", STATION),
-                           ("SELF-DESTRUCT IN 1...", STATION)]:
-        screen.wait_for_size()
-        print(screen.CLEAR + BOLD + YELLOW + title + RESET + "\n")
-        print("\n".join(picture))
-        time.sleep(1)
-    screen.show([BOLD + YELLOW + "*** KABOOM ***" + RESET, ""] + BOOM
-                + ["", BOLD + YELLOW + "The station is gone. You escaped! "
-                   "MISSION COMPLETE!" + RESET], "(press ENTER) ")
-
-
-def play(extra_guesses=0):
-    if control_room(MAX_GUESSES + extra_guesses):
-        ending()
-        return True
-    return False
+def play(extra_guesses=0, has_hint=False):
+    return control_room(MAX_GUESSES + extra_guesses, has_hint)
 
 
 if __name__ == "__main__":

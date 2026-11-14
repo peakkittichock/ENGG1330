@@ -48,23 +48,26 @@ Do not break these names or return values. Each level file may also run standalo
 ### Level 1 — The blaster range (owner: Peak)
 - "SHOOT THE ENEMY, not the ally": 3 x 3 grid of doors with troopers and prisoners.
   A bolt hits a row, a column or one door; armored troopers need 2 hits; few shots per round.
-- 3 rounds. Hitting a prisoner or running out of shots restarts the round. `hint` uses a
-  depth-first search. No prisoner hit = one extra guess in Level 3.
+- 4 rounds; rounds 3 and 4 have a conveyor belt row (`>>`) that slides one door right
+  after every shot. Hitting 2 prisoners or running out of shots restarts the round;
+  `reset` restarts it by hand, `help` shows the rules. `hint` uses a depth-first search.
+  No prisoner hit in the whole level = one extra guess in Level 3.
 - **Status: built** in `LV1.py`.
 
 ### Level 2 — Through the shadows: maze (owner: Antonio)
 - Imperial alarms sound; player enters the station's maintenance tunnels.
   Security droids patrol, laser barriers block paths.
 - Objective: find the right path to the central control room (enter different rooms).
-- **Status: built** in `LV2.py`: random 2D maze (recursive backtracker), arrow keys / `w a s d`,
-  one step per key press (no timer, so still turn based). Par count and dead-end check were cut.
+- **Status: built** in `LV2.py` (Antonio's updated version): random 2D maze (recursive
+  backtracker, at least 12 dead ends), arrow keys / `w a s d`, 45-second countdown, BFS par.
+  Optional hint `○` on a random reachable tile; carrying it out sets `LV2.found_hint`.
 
 ### Level 3 — Wordle: self-destruct code
 - Player is in the control room. Find the self-destruct secret code and type it into
   the control panel; the station explodes; get into the starfighter in time to escape.
 - Code: Wordle-style 5-letter guess, green/yellow/gray tiles, `MAX_GUESSES = 6`,
   answer `CODE = "OMEGA"`. Clues in room: commander's log ("last letter of the Greek
-  alphabet") and broken screen (`_ _ _ G _`).
+  alphabet"). With the Level 2 hint, the room shows `_ _ _ G _` right away.
 - Ending: 3-2-1 countdown, BOOM, "MISSION COMPLETE".
 - **Status: built** — `score_guess()` does real Wordle scoring (greens first, then
   yellows by remaining count).
@@ -100,7 +103,7 @@ Do not break these names or return values. Each level file may also run standalo
   Team must fill every `[TODO]` (names, group no., contributions, manual test results).
 - [x] Stealth event (`Stealth.py`, Ryan): 2 s timer kept on purpose (team choice), even
   though the brief rules out real-time controls. Ask STA. Runs after Level 1 (always)
-  and after Level 2 (50% chance).
+  and after Level 2 (always).
 - [ ] Optional: station-HP typing boss, maze theme decorations.
 - [ ] Agree deadlines for each level.
 
@@ -118,7 +121,7 @@ Do not break these names or return values. Each level file may also run standalo
 - Single-player, **turn-based**, 5–10 min playthrough, ≥2 connected puzzles, instructions,
   clear win condition, restart. **Real-time controls are out of scope** — so the timed
   stealth event and timed typing boss in section 4 conflict with the brief (stealth kept
-  timed on purpose, ask STA). LV2 moves one step per key press (arrow keys / w a s d), no timer.
+  timed on purpose, ask STA). LV2 now has a 45-second timer too (same conflict, ask STA).
 - Must run in container `engg1330-project:2026-v03`, stdlib + starter packages only.
 - If terminal < 80x24: pause and show a resize message that fits the space. Done:
   `screen.wait_for_size()`.
