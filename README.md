@@ -42,7 +42,7 @@ typed answer and `ENTER`; the maze moves one step per key press against a 45-sec
 |---|---|---|
 | Welcome + How to play | Read the story and the rules | `ENTER` |
 | Level 1 – Blaster range | Clear a 3×3 grid of troopers in 4 rounds with few shots, without hitting an ally (rebel pilot). Armored troopers need 2 hits. Rows marked `>>` are conveyor belts that slide one door right after every shot. Hitting 2 allies or running out of shots restarts the round. | `r1`–`r3` row, `c1`–`c3` column, `1`–`9` one door, `hint`, `reset`, `help`, `quit` |
-| Stealth event (after Level 1 and after Level 2) | A guard comes close. Press the letter shown before the `====` bar runs out (2 seconds). Wrong key or too slow: caught (GAME OVER). | One key `a`–`z`, no `ENTER` |
+| Stealth event (after Level 1 and after Level 2) | A guard comes close. Type the hiding-place word shown (e.g. `VENT`) and press `ENTER` before the 5-second bar runs out. Wrong word: type again. Too slow: caught (GAME OVER). | The word shown (any case), then `ENTER` |
 | Level 2 – Maintenance tunnels | Reach the exit `★` (bottom-right) of a random maze within 45 seconds. Optional: pick up the crystal hint `◆` on the way. Time runs out: caught (GAME OVER). | Arrow keys or `w a s d`, one step per key press (hold to keep going, no `ENTER`) |
 | Level 3 – Control room | Search the room for clues, then crack the 5-letter self-destruct code, Wordle-style. 4 guesses (5 with the Level 1 bonus); all wrong = game over. | `1`–`2`, a 5-letter word, `BACK` leaves the panel, `quit` |
 
@@ -69,7 +69,7 @@ wrong spot; gray ` A ` = not in the code.
 | `main.py` | Runs the whole game: welcome → levels → credits, game over and play again |
 | `Lobby.py` | Welcome screen and how-to-play page |
 | `LV1.py` | Level 1: blaster range (depth-first search for the `hint` command) |
-| `Stealth.py` | Stealth event between levels: hide from a guard by typing a letter |
+| `Stealth.py` | Stealth event between levels: hide from a guard by typing a hiding-place word |
 | `LV2.py` | Level 2: random maze (depth-first search maze generation) |
 | `LV3.py` | Level 3: control room, Wordle-style code panel |
 | `Endcredit.py` | Scrolling end credits |
@@ -110,7 +110,8 @@ A wrong action is explained on screen and the player stays where they were.
 | Level 1 | `zzz`, `r9`, empty, a door with nothing in it | Message, no shot used |
 | Level 1 | Last shot used with troopers left | ROUND FAILED, round restarts |
 | Level 1 | 2 allies hit in one round | ROUND FAILED, round restarts |
-| Stealth | Wrong key, or no key in 2 seconds | Caught, GAME OVER; keys pressed early are ignored |
+| Stealth | Wrong word, then right word within 5 seconds | "Wrong!" shown, line cleared, then hidden |
+| Stealth | No right word within 5 seconds | Caught, GAME OVER |
 | Level 2 | Any other key | Ignored, no move |
 | Level 2 | Walking into a wall | Stays put |
 | Level 2 | Clock reaches 0 | "Time's up!", GAME OVER |
@@ -144,7 +145,7 @@ A wrong action is explained on screen and the player stays where they were.
 - Level 2 needs a real terminal (it reads single key presses). Without one it ends the
   level. Terminals without UTF-8 (or `python3 main.py --ascii`) show `()`, `<>`, `EX`.
 - Colours use ANSI escape codes; very old terminals may show raw codes.
-- The stealth event (2 seconds) and the Level 2 maze (45 seconds) are timed. The brief
+- The stealth event (5 seconds) and the Level 2 maze (45 seconds) are timed. The brief
   asks for a turn-based game; these timed parts are kept on purpose by the team. If the window is resized during
   those 2 seconds the timer does not pause. Without a real terminal (or on Windows) the
   player types the letter and `ENTER` instead, and the time is checked afterwards.

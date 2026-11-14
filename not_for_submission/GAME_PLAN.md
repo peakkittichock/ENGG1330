@@ -101,7 +101,7 @@ Do not break these names or return values. Each level file may also run standalo
 - [x] Implement `score_guess()` in `LV3.py` (Wordle scoring).
 - [x] Drafts: `README.md`, `ACKNOWLEDGEMENTS.md`, `ai_use.md`.
   Team must fill every `[TODO]` (names, group no., contributions, manual test results).
-- [x] Stealth event (`Stealth.py`, Ryan): 2 s timer kept on purpose (team choice), even
+- [x] Stealth event (`Stealth.py`, Ryan): 5 s timer (type a hiding-place word) kept on purpose (team choice), even
   though the brief rules out real-time controls. Ask STA. Runs after Level 1 (always)
   and after Level 2 (always).
 - [ ] Optional: station-HP typing boss, maze theme decorations.
