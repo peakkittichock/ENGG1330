@@ -75,7 +75,6 @@ def twinkle():
     if os.name == "nt" or not sys.stdin.isatty():
         screen.show(frames[0], PLAY_PROMPT)
         return
-    screen.wait_for_size()
     print(screen.CLEAR, end="")
     i = 0
     while True:
@@ -121,4 +120,5 @@ HOW_TO_PLAY = [
 
 
 if __name__ == "__main__":
+    screen.start()
     run()

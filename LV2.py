@@ -263,13 +263,21 @@ def raw_terminal(): #This function was debugged and assisted by ChatGPT-Sol 6.1 
         yield
     finally:
         # Throw away keys still held down, so they don't leak into the next screen.
-        key_buffer = ""
-        if os.name == "nt":
-            while msvcrt.kbhit():
-                msvcrt.getwch()
-        else:
-            termios.tcflush(fd, termios.TCIFLUSH)
+        drop_held_keys()
+        if os.name != "nt":
             termios.tcsetattr(fd, termios.TCSADRAIN, saved_mode)
+
+
+def drop_held_keys():
+    """Forget keys that were pressed but not used yet."""
+    global key_buffer
+    key_buffer = ""
+    if os.name == "nt":
+        while msvcrt.kbhit():
+            msvcrt.getwch()
+    else:
+        import termios
+        termios.tcflush(sys.stdin.fileno(), termios.TCIFLUSH)
 
 
 def countdown_text(seconds_left):
@@ -320,23 +328,17 @@ def move_player(previous, pos, collected):
 
 
 def run_maze():
-    """Play one maze. Returns (won, hint, moves, par)."""
+    """Play one maze. Returns (won, hint, moves, par).
+    screen.clock() stops while the window is too small, so the countdown pauses."""
     grid, start, goal, par = generate_maze()
-    deadline = time.monotonic() + TIME_LIMIT
+    deadline = screen.clock() + TIME_LIMIT
     pos, moves, hint, trail = start, 0, False, {start}
     hint_pos = spawn_hint(grid, start, goal)
-    shown_seconds = max(0, math.ceil(deadline - time.monotonic()))
+    shown_seconds = max(0, math.ceil(deadline - screen.clock()))
     draw_maze(grid, pos, goal, hint_pos, trail, shown_seconds)
 
     while True:
-        # Window shrunk below 80x24: pause the clock until it is big enough again.
-        if screen.too_small():
-            paused_at = time.monotonic()
-            screen.wait_for_size()
-            deadline += time.monotonic() - paused_at
-            draw_maze(grid, pos, goal, hint_pos, trail, shown_seconds)
-
-        remaining = deadline - time.monotonic()
+        remaining = deadline - screen.clock()
         seconds = max(0, math.ceil(remaining))
         if remaining <= 0:
             update_countdown(0)
@@ -345,11 +347,14 @@ def run_maze():
             update_countdown(seconds)
             shown_seconds = seconds
         key = read_key(min(0.05, max(0, remaining)))
+        if screen.wait_while_paused():    # ignore keys pressed during a pause
+            drop_held_keys()
+            continue
         if key not in MOVES:
             continue
         dr, dc = MOVES[key]
         nr, nc = pos[0] + dr, pos[1] + dc
-        if grid[nr][nc] != PATH or time.monotonic() >= deadline:
+        if grid[nr][nc] != PATH or screen.clock() >= deadline:
             continue
         previous, pos = pos, (nr, nc)
         trail.add(pos)
@@ -382,7 +387,6 @@ def play():
     if screen.show(intro, " Press ENTER to start the clock> ").strip().lower() == "quit":
         return False
 
-    screen.wait_for_size()
     with raw_terminal():
         sys.stdout.write(ENTER_SCREEN)
         try:
@@ -407,4 +411,5 @@ def play():
 
 
 if __name__ == "__main__":
+    screen.start()
     print("Escaped the maze!" if play() else "Caught!")

@@ -132,4 +132,5 @@ def play(extra_guesses=0, has_hint=False):
 
 
 if __name__ == "__main__":
+    screen.start()
     print("Escaped!" if play() else "Caught!")

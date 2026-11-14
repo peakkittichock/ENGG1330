@@ -36,6 +36,7 @@ def ask_play_again(lines):
 
 
 def main():
+    screen.start()   # pause the game whenever the window is smaller than 80x24
     try:
         while True:
             if play_once():

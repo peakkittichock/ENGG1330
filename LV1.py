@@ -133,7 +133,6 @@ def round_screen(number, level, grid, shots, strikes, message, footer):
 
 
 def show(lines, prompt):
-    screen.wait_for_size()
     print(CLEAR + "\n".join(lines + [""] * (22 - len(lines))))
     answer = input(prompt).strip().lower()
     if answer == "quit":
@@ -241,4 +240,5 @@ def run_level1():
 
 
 if __name__ == "__main__":
+    screen.start()
     print(CLEAR + "Level 1 finished. Result: " + str(run_level1()))

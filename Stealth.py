@@ -40,17 +40,20 @@ def draw(left, typed, note):
 
 def timed_typing(word, get_key):
     """Read keys until the right word + ENTER (True) or time runs out (False).
-    A wrong word clears the line so the player can type again."""
-    deadline = time.time() + TIME_LIMIT
+    A wrong word clears the line so the player can type again.
+    screen.clock() stops while the window is too small, so the timer pauses too."""
+    deadline = screen.clock() + TIME_LIMIT
     typed, note = "", ""
     while True:
-        left = deadline - time.time()
+        left = deadline - screen.clock()
         if left <= 0:
             draw(0, typed, note)
             print()
             return False
         draw(left, typed, note)
         key = get_key()
+        if screen.wait_while_paused():    # ignore keys from before / during a pause
+            continue
         if key is None:
             continue
         if key in "\r\n":
@@ -97,10 +100,10 @@ def type_with_timer(word):
 
 def type_without_timer(word):
     """No real terminal (e.g. piped input): plain input(), time checked after ENTER."""
-    deadline = time.time() + TIME_LIMIT
+    deadline = screen.clock() + TIME_LIMIT
     while True:
         answer = input("  > ").strip().lower()
-        if time.time() > deadline:
+        if screen.clock() > deadline:
             return False
         if answer == word:
             return True
@@ -111,7 +114,6 @@ def quicktime():
     """Guard event. Returns True if the player hides in time, False if caught."""
     word = random.choice(list(HIDE_PLACES))
     place = HIDE_PLACES[word]
-    screen.wait_for_size()
     print(screen.CLEAR + "\n".join(ALERT))
     time.sleep(1)
     print(BOLD + YELLOW + f"  TYPE  {word.upper()}  and press ENTER to hide {place}!" + RESET)
@@ -130,4 +132,5 @@ def quicktime():
 
 
 if __name__ == "__main__":
+    screen.start()
     print("Hidden!" if quicktime() else "Caught!")

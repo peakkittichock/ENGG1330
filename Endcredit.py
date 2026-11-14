@@ -282,14 +282,12 @@ def draw(lines):
 
 def play_explosion():
     for art, delay in EXPLOSION:
-        screen.wait_for_size()
         draw(frame_lines(art))
         time.sleep(delay)
 
 
 def play_scroll():
     for step in range(len(CREDITS) + ROWS):
-        screen.wait_for_size()
         lines = []
         for row in range(ROWS):
             i = row + step - ROWS
@@ -309,4 +307,5 @@ def play_credits():
 
 
 if __name__ == "__main__":
+    screen.start()
     play_credits()
