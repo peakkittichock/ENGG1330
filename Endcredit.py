@@ -240,7 +240,7 @@ CREDITS = [
     "",
     "Krittichok Khanthithao",
     "Leung Ho Long Ryan",
-    "Lord Mensah Kojo Tandoh",
+    "Lord Kojo Tandoh Mensah",
     "Antonio Sutowo",
     "",
     "",
