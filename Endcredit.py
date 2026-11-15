@@ -7,7 +7,7 @@ ROWS = 22
 WIDTH = 79
 SPEED = 0.35
 
-# The Ironwake blows up. Each entry is (frame, seconds to hold it).
+# The Death Star blows up. Each entry is (frame, seconds to hold it).
 # Strings use ''' because the ship drawing contains """.
 EXPLOSION = [
     (r'''

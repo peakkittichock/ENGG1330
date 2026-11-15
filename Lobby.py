@@ -98,7 +98,7 @@ def heading(text):
 HOW_TO_PLAY = [
     BOLD + "HOW TO PLAY".center(79) + RESET,
     heading("THE STORY"),
-    "  You were captured and brought aboard the battle station IRONWAKE. You",
+    "  You were captured and brought aboard the DEATH STAR. You",
     "  slipped away from your guards. The last ship leaves at midnight!",
     "",
     heading("LEVEL 1 - THE BLASTER RANGE"),
