@@ -1,10 +1,6 @@
 # AI Use
 Generative AI used: Yes
 
-Each entry below is a substantive use of generative AI. Every member who used AI adds their
-own entries. Full chat transcripts are kept by the member and can be shown to the teaching
-team on request.
-
 ## Entry 1
 - Member and date: Krittichok Khanthithao (Peak), 9 November, 2026 
 - Tool and model/version: Claude Code (Anthropic), Claude Opus 5.5
