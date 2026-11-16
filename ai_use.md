@@ -12,8 +12,7 @@ Generative AI used: Yes
   `ACKNOWLEDGEMENTS.md`
 - What was kept, changed, or rejected, and how results were checked: Kept the team's story
   (DEATH STAR escape) and the three-level plan. Most of this first version was later
-  simplified or replaced (see Entries 1-4). [CHECK: add anything you rejected] Checked by
-  running `python3 main.py` and playing through.
+  simplified or replaced (see Entries 1-4). Checked by running `python3 main.py` and playing through.
 
 ## Entry 2
 - Member and date: Krittichok Khanthithao (Peak), 11 November, 2026 
