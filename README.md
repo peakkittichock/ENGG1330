@@ -1,12 +1,12 @@
-# DEATHSTAR ESCAPE
+ # DEATHSTAR ESCAPE
 
 ENGG1330 Group Project 2026–27. A single-player console puzzle adventure in Python.
 
 | | |
 |---|---|
-| Group | 7 |
+| Group | 07 |
 | Subclass | 1B |
-| Members | Khanthithao Krittichok, Leung Ho Long Ryan, Mensah Lord Kojo Tandoh, Sutowo Antonio |
+| Members | Krittichok Khanthithao, Leung Ho Long Ryan, Lord Kojo Tandoh Mensah, Antonio Sutowo|
 | Container | `engg1330-project:2026-v03` |
 | Entry point | `main.py` |
 | Playtime | about 3–5 minutes for one full run |
@@ -14,12 +14,12 @@ ENGG1330 Group Project 2026–27. A single-player console puzzle adventure in Py
 ## 1. Purpose and story
 
 You are a REBEL, captured and brought aboard the Empire's battle station, the **Death Star**.
-You slipped away from your guards, and the last ship leaves at midnight.
+You slipped away from your guards, and you have to find a way to escape! 
 
-1. Prove you can handle a blaster on the **blaster range** to earn an access card.
-2. Run through the **maintenance tunnels** before the clock runs out, and grab a crystal
+Level 1: Prove you can handle a blaster on the **blaster range** to earn an access card.
+Level 2: Run through the **maintenance tunnels** before the clock runs out, and grab a crystal
    that holds part of the self-destruct code.
-3. Crack the **self-destruct code** in the control room.
+Level 3: Crack the **self-destruct code** in the control room.
 
 Guards patrol between the levels, so you have to hide quickly. When the code is accepted,
 you take an X-wing out of the hangar, the station explodes behind you and the end credits
@@ -30,7 +30,9 @@ roll.
 Inside the course container, from the top level of the extracted project folder:
 
 ```
-python3 main.py
+python3 main.py 
+OR if 'python3' doesn't work, replace with 'py' as shown below:
+py main.py
 ```
 
 - Terminal must be at least **80 columns × 24 rows** (bigger is fine; the game only uses
@@ -38,8 +40,6 @@ python3 main.py
   pauses (timers, animations, drawing) and one message asks you to enlarge it. The
   game carries on from the same screen when the window is big enough again.
 - No extra packages: Python standard library only.
-- `python3 main.py --ascii` draws the Level 2 maze with plain ASCII characters, for
-  terminals without UTF-8.
 - Each part can also be run on its own for testing, e.g. `python3 LV1.py`,
   `python3 Stealth.py`, `python3 LV2.py`, `python3 LV3.py`, `python3 Endcredit.py`.
 
@@ -47,7 +47,7 @@ python3 main.py
 
 The game runs in this order:
 
-**Title → How to play → Level 1 → Guard → Level 2 → Guard → Level 3 → End credits**
+**Lobby → How to play → Level 1 → Guard → Level 2 → Guard → Level 3 → End credits**
 
 Most screens are turn based: nothing happens until you type an answer and press `ENTER`.
 Two parts are timed: the guard events (5 seconds) and the Level 2 maze (45 seconds).
@@ -194,13 +194,13 @@ A wrong action is explained on screen and the player stays where they were.
 | # | Test | Expected | Result |
 |---|---|---|---|
 | 1 | Full normal playthrough | Reaches the explosion, credits and "You escaped from the Death Star!" | Pass |
-| 2 | Level 1: shoot one ally, then a second one | First: warning, round goes on. Second: ROUND FAILED, round restarts. No bonus at the end | [TODO retest] |
+| 2 | Level 1: shoot one ally, then a second one | First: warning, round goes on. Second: ROUND FAILED, round restarts. No bonus at the end | Pass |
 | 3 | Level 1: type `hint` | Shows a safe shot | Pass |
-| 4 | Level 1: clear all rounds with no ally hit | "Bonus: one extra guess", Level 3 shows 5 guesses | [TODO test] |
-| 5 | Guard event: type a wrong word, then the right one in time | "Wrong!", then "You hide ..." | [TODO test] |
+| 4 | Level 1: clear all rounds with no ally hit | "Bonus: one extra guess", Level 3 shows 5 guesses | Pass |
+| 5 | Guard event: type a wrong word, then the right one in time | "Wrong!", then "You hide ..." | Pass |
 | 6 | Guard event: type nothing for 5 seconds | Caught, GAME OVER | [TODO test] |
-| 7 | Level 2: hold an arrow key, walk into a wall, press `x`, let the clock run out | Moves step by step, no crash, GAME OVER | [TODO retest] |
-| 8 | Level 2: collect the crystal, then reach the exit | Crystal screen; Level 3 shows `_ _ _ E _` | [TODO test] |
+| 7 | Level 2: hold an arrow key, walk into a wall, press `x`, let the clock run out | Moves step by step, no crash, GAME OVER | Pass |
+| 8 | Level 2: collect the crystal, then reach the exit | Crystal screen; Level 3 shows `_ _ _ E _` | Pass |
 | 9 | Level 3: `ab`, `12345`, empty, same code twice | Message, no guess used | Pass |
 | 10 | Level 3: use all guesses wrong | Alarm message, then game-over screen | Pass |
 | 11 | Type `quit` in a level, then `y` | GAME OVER, then game restarts from the title | Pass |
@@ -227,17 +227,60 @@ A wrong action is explained on screen and the player stays where they were.
   and the guard's hiding word are random every time.
 
 ## 10. Contributions
+1. Krittichok Khanthithao, 3036737659: Level 3 “The Control Room”; End Credits; Joining all the levels into main.py;
+Description:
+My contributions are making level3, include, the commander’s log clue and the 5-letter self-destruct code puzzle with Wordle-style (green/yellow/gray tiles), input checks and BACK to leave in the panel. End credits (Endcredits.py) : integrate the Death Star explosion ASCII animation made by Ryan, then the credits scrolling over the stars. Joined all files into one game in main.py , including the Level 1 bonus guess in Level 3, and merged Ryan’s Lobby.py and Endcredit.py . Screen.py pauses the game when the terminal is smaller than 80 x 24. With help from Claude(Anthropic), I used os.get_terminal_size(), which returns the window’s width and height, and import sys gives sys.stdout, the terminal the game prints to.
 
-| Member | Contributions |
-|---|---|
-| Khanthithao Krittichok (Peak) | [TODO check] Level 1 (owner); joined all files into `main.py`; how-to-play rules; Level 3 ending; game plan document; README, tests |
-| Sutowo Antonio | [TODO check] Level 2 maze |
-| Leung Ho Long Ryan | [TODO check] Guard event (`Stealth.py`): idea and first version; timer rewritten without threads so a late key cannot leak into the next level; typed hiding-place word with a live countdown bar |
-| Mensah Lord Kojo Tandoh | [TODO] e.g. Level 3, title screen art, end credits explosion, videos |
 
-Everyone: planning on the team Excalidraw board, playtesting, checking the final
-submission. [TODO edit to match what actually happened.]
+2. Antonio Sutowo, 3036727757: Level 2 “The Maintenance Tunnels”; Video Editing; Overall Integration of the Levels; testing for bugs in the game. 
+Description: 
+I created LV2.py. I implemented the Depth-First Search algorithm and Breadth-First Search algorithm to generate a randomly carved maze in the python terminal. I used OpenAI’s GPT Sol-6.1 as assistance to create the maze visually attractive, implementing ANSI colour codes and allowing players to use WASD and arrow keys to play through the maze. I also ensured that the overall flow of the project is smooth, with all parts of the game being integrated correctly and functioning well (I did this by actively checking for mistakes or typos in LV1.py, LV3.py, Lobby.py, and Endcredit.py). Other than that, I helped pitch the concept for the game to be following a Star Wars storyline. I also actively initiated and led group discussions to ensure group coordination and synchronisation. 
+
+
+3. Leung Ho Long Ryan, 3036826632: Stealth event; artistic design; trailer video
+Description:
+I proposed the idea and first draft of codes (guard, random hide letter, shrinking bar) for stealth.py, made the ascii title, death star and gameover scene art, drew the Lv3 ending animation frames, and also did the design and editing of the trailer video.
+
+4. Lord Kojo Tandoh Mensah, 3036735261: Level 1,”Blaster Range”
+Description: 
+I built stage 1 of the Star Wars wordle game, with four progressive levels( Warm Up, Armor plating, The conveyor, and Double Trouble) that introduce row and column targeting, two hit armored troopers, and sliding conveyor rows, then combine them under tight shot limits. I wrote a command parser for row shots, column shots, door selection, and the hint, reset, help, and quit controls. I also fixed three bugs: the layout breaking on small terminals, the hint solver mutating the live board (fixed by deep copying the grid), and ally strike tracking that ignored hits on rebel pilots. I used Claude assistance to design and implement the recursive backtracking algorithm (find_plan) behind the hint feature, to build terminal dimension polling, state change tracking, and dynamic text wrapping in the screen module, to write defensive input sanitization that handles whitespace, case, shorthand expansion, and grid boundary checks, and to develop the multi-line ASCII sprite mapping, coordinate math, and grid layout engine (board_lines).
+
+
+Everyone: planning and brainstorming on the team Excalidraw board (online website), playtesting, checking the final submission. 
+
 
 ## 11. Sources and acknowledgements
 
+Story settings inspired by and based on:
+Star Wars created by George Lucas
+
+Built-in functions. (n.d.). Python Documentation. https://docs.python.org/3/builtins/functions.html#enumerate 
+Claude. (2026). Claude. https://claude.com/ 
+Ctypes — A foreign function library for python — Python 3.9.5 documentation. (n.d.). Docs.Python.Org. https://docs.python.org/3/library/ctypes.html 
+GeeksforGeeks. (2026, October 17). Breadth first search or BFS for a graph.
+GeeksforGeeks. (2026b, October 25). Dijkstra’s algorithm. GeeksforGeeks. https://www.geeksforgeeks.org/dsa/dijkstras-shortest-path-algorithm-greedy-algo-7/ 
+GeeksforGeekshttps://www.geeksforgeeks.org/dsa/breadth-first-search-or-bfs-for-a-graph/ 
+Google. (2025). Gemini. Gemini.Google.Com; Google. https://gemini.google.com/app 
+io — Core tools for working with streams. (n.d.). Python Documentation. https://docs.python.org/3/library/io.html 
+javidx9. (n.d.). Programming mazes [Video]. YouTube.https://www.youtube.com/watch?v=Y37-gB83HKE 
+JimShapedCoding. (2020, November 8). Python OS module | the best functions. YouTube. https://www.youtube.com/watch?v=mQppXRN841w 
+Lawrence, J. (2022, March 1). Why Most Wordle Clones are Wrong! DEV Community. https://dev.to/denvercoder1/why-most-wordle-clones-are-wrong-390c 
+Maranan, M. (2023, July 6). How to make a maze game in python - the python code. Thepythoncode.Com. https://thepythoncode.com/article/build-a-maze-game-in-python 
+MSVCRT — Useful routines from the MS VC++ runtime. (2024). Python Documentation. https://docs.python.org/3/library/msvcrt.html 
+Nicholas Britell - Topic. (2022, October 20). Pilgrim [Video]. YouTube. https://youtu.be/lyKYUivIUlE 
+OpenAI. (2025, September 12). ChatGPT. Chatgpt.Com; OpenAI. https://chatgpt.com 
+os — Miscellaneous operating system interfaces. (n.d.). Python Documentation. https://docs.python.org/3/library/os.html#os.get_terminal_size 
+Pymaze. (2015, January 3). PyPI. https://pypi.org/project/pymaze/ 
+Python collections Module. (n.d.).
+Python. (2010). SYS — System-specific parameters and functions — Python 3.7.3 documentation. Python.Org. https://docs.python.org/3/library/sys.html 
+Real Python. (n.d.). MSVCRT. Real Python. https://realpython.com/ref/stdlib/msvcrt/ 
+Select — Waiting for I/O completion — Python 3.10.4 documentation. (n.d.). Docs.Python.Org. https://docs.python.org/3/library/select.html 
+shutil — High-level file operations. (n.d.). Python Documentation. https://docs.python.org/3/library/shutil.html 
+sys — System-specific parameters and functions. (n.d.). Python Documentation. https://docs.python.org/3/library/sys.html 
+time — Time access and conversions. (n.d.). Python Documentation. https://docs.python.org/3/library/time.html 
+time — Time access and conversions. (n.d.-b). Python Documentation. https://docs.python.org/3/library/time.html#time.sleep 
+W3Schools. (n.d.). Python collections module https://www.w3schools.com/python/ref_module_collections.asp 
+w3schools. (n.d.). Python OS Module. Www.W3schools.com. https://www.w3schools.com/python/module_os.asp 
+W3Schools. (n.d.). Python random module. Www.W3schools.Com. https://www.w3schools.com/python/   module_random.asp 
+ 
 See `ACKNOWLEDGEMENTS.md` (sources and inspirations) and `ai_use.md` (generative AI use).
