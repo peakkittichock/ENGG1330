@@ -99,7 +99,7 @@ HOW_TO_PLAY = [
     BOLD + "HOW TO PLAY".center(79) + RESET,
     heading("THE STORY"),
     "  You were captured and brought aboard the DEATH STAR. You",
-    "  slipped away from your guards. The last ship leaves at midnight!",
+    "  slipped away from your guards. Escape through all the levels to survive!",
     "",
     heading("LEVEL 1 - THE BLASTER RANGE"),
     "  Shoot every trooper on a 3 x 3 grid of doors without hitting an ally.",
