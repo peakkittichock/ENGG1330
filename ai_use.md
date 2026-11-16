@@ -11,7 +11,7 @@ Generative AI used: Yes
   `Endcredit.py`, `LV1.py`, `LV2.py`, `LV3.py`, `README.md`, `GAME_PLAN.md`,
   `ACKNOWLEDGEMENTS.md`
 - What was kept, changed, or rejected, and how results were checked: Kept the team's story
-  (IRONWAKE escape) and the three-level plan. Most of this first version was later
+  (DEATH STAR escape) and the three-level plan. Most of this first version was later
   simplified or replaced (see Entries 1-4). [CHECK: add anything you rejected] Checked by
   running `python3 main.py` and playing through.
 
@@ -82,7 +82,7 @@ Generative AI used: Yes
 - Substantial parts affected (files/materials): `LV1.py`, `README.md`, `GAME_PLAN.md`
 - What was kept, changed, or rejected, and how results were checked: Kept the teammate's
   new rules: 4 rounds, conveyor belt rows, a limit of 2 prisoner hits per round, and the
-  `reset` and `help` commands. Kept the IRONWAKE story (troopers and prisoners) instead of
+  `reset` and `help` commands. Kept the DEATH STAR story (troopers and prisoners) instead of
   the teammate's story text, and kept the shared `screen.py` and the `play()` contract used
   by `main.py`. Checked with `find_plan()` that each round can be cleared with exactly its
   number of shots and not with one fewer, and by playing through Level 1.
