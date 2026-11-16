@@ -31,7 +31,7 @@ team on request.
   checked with the `find_plan()` search and by playing all 3 rounds by hand.
 
 ## Entry 3
-- Member and date:  Krittichok Khanthithao (Peak), 2026-11-11
+- Member and date:  Krittichok Khanthithao (Peak), 11 November, 2026 
 - Tool and model/version: Claude Code (Anthropic), Claude Opus 5.5
 - Purpose: Review all the code and make it simpler: shorter functions, fewer features,
   removal of long comments and docstrings.
@@ -44,7 +44,7 @@ team on request.
   1-9).
 
 ## Entry 4
-- Member and date: Krittichok Khanthithao (Peak), 2026-11-11
+- Member and date: Krittichok Khanthithao (Peak), 11 November, 2026 
 - Tool and model/version: Claude Code (Anthropic), Claude Opus 5.5
 - Purpose: Let the Level 2 maze be played with the arrow keys (hold a key to keep moving)
   instead of typing `w a s d` + `ENTER` each time.
@@ -56,7 +56,7 @@ team on request.
   test 9).
 
 ## Entry 5
-- Member and date: Krittichok Khanthithao (Peak), 2026-11-11
+- Member and date: Krittichok Khanthithao (Peak), 11 November, 2026 
 - Tool and model/version: Claude Code (Anthropic), Claude Opus 5.5
 - Purpose: Bring back Ryan's stealth event with its timer, without the bug where a late key
   press leaked into the next level.
@@ -68,7 +68,7 @@ team on request.
   pressing the right key, a wrong key and no key.
 
 ## Entry 6
-- Member and date: Krittichok Khanthithao (Peak), 2026-11-11
+- Member and date: Krittichok Khanthithao (Peak), 11 November, 2026 
 - Tool and model/version: Claude Code (Anthropic), Claude Opus 5.5
 - Purpose: Drafts of the documentation, and adding the group number, subclass and member
   names to the end credits.
