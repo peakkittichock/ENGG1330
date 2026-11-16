@@ -1,4 +1,4 @@
- # DEATHSTAR ESCAPE
+# DEATHSTAR ESCAPE
 
 ENGG1330 Group Project 2026–27. A single-player console puzzle adventure in Python.
 
@@ -237,7 +237,7 @@ Description:
 I created LV2.py. I implemented the Depth-First Search algorithm and Breadth-First Search algorithm to generate a randomly carved maze in the python terminal. I used OpenAI’s GPT Sol-6.1 as assistance to create the maze visually attractive, implementing ANSI colour codes and allowing players to use WASD and arrow keys to play through the maze. I also ensured that the overall flow of the project is smooth, with all parts of the game being integrated correctly and functioning well (I did this by actively checking for mistakes or typos in LV1.py, LV3.py, Lobby.py, and Endcredit.py). Other than that, I helped pitch the concept for the game to be following a Star Wars storyline. I also actively initiated and led group discussions to ensure group coordination and synchronisation. 
 
 
-3. Leung Ho Long Ryan, 3036826632: Stealth event; artistic design; trailer video
+3. Leung Ho Long Ryan, 3036826632: The guard event; artistic design; trailer video
 Description:
 I proposed the idea and first draft of codes (guard, random hide letter, shrinking bar) for stealth.py, made the ascii title, death star and gameover scene art, drew the Lv3 ending animation frames, and also did the design and editing of the trailer video.
 
